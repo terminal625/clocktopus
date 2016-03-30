@@ -19,6 +19,6 @@
   (window-my-leave)
   (render-my-leave))
 
-(defun arise ()
+(defun arise (args)
     (window-start #'my-zero #'my-one #'my-infinity))
 
