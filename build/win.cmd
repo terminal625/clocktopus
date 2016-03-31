@@ -1,0 +1,1 @@
+buildapp.exe --asdf-tree "C:\Users\The Phantom\quicklisp\dists\quicklisp\software" --load-system cl-opengl --load-system cl-glu --load-system lispbuilder-sdl --output "C:\Users\The Phantom\quicklisp\local-projects\cocktus\build\winclocktopus" --asdf-tree "C:\Users\The Phantom\quicklisp\local-projects" --load-system cocktus --entry cocktus:arise

@@ -11,6 +11,6 @@ buildapp \
     --load-system cl-glu \
     --load-system lispbuilder-sdl \
     --output clocktopus \
-	--asdf-path ~/quicklisp/local-projects/cocktus/ \
+	--asdf-path ~/src/lisp/cocktus/ \
 	--load-system cocktus \
     --entry cocktus:arise

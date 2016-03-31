@@ -15,7 +15,7 @@
 	    (funcall infinity)))
 
 (defun window-my-enter ()
-	(sdl:window 720 720 :title-caption "a fuck made by terminal256" :flags '(sdl:sdl-opengl))
+	(sdl:window 720 720 :title-caption "a fuck made by terminal256" :flags '(sdl:sdl-opengl sdl:sdl-resizable))
   	;;creating the window 
 
   	(setf (sdl:frame-rate) 60)
