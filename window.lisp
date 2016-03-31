@@ -1,7 +1,7 @@
 (in-package #:cocktus)
 
 ;;takes a the key's character or name tests the state
-(defun keydown (the-key)
+(defun is-key-down (the-key)
 	(sdl:GET-KEY-STATE (read-from-string (concatenate 'string ":SDL-KEY-" the-key))))
 
 (defun window-start (zero one infinity)
