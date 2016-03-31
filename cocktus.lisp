@@ -19,6 +19,6 @@
   (window-my-leave)
   (render-my-leave))
 
-(defun arise (args)
+(defun arise (&rest cocktopussy)
     (window-start #'my-zero #'my-one #'my-infinity))
 

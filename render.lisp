@@ -1,6 +1,6 @@
 (in-package #:cocktus)
 
-(defparameter *the-texture* (car (gl:gen-textures 1)))
+(defparameter *the-texture* nil)
 
 (defun make-my-texture (the-texture the-tex-data)
 	(gl:bind-texture :texture-2d the-texture)
@@ -41,7 +41,9 @@
     (gl:vertex    -1  1 0)))
 
 (defun render-my-enter ()
-  (make-my-texture *the-texture* data-smile))
+  (setf *the-texture* (car (gl:gen-textures 1)))
+  (make-my-texture *the-texture* data-smile)
+  )
 
 (defun render-my-fucks ()
   "draw a frame"
@@ -49,14 +51,15 @@
   ;; if our texture is loaded, activate it and turn on texturing
   (gl:enable :texture-2d)
 
-  (when *the-texture*
-    (gl:bind-texture :texture-2d *the-texture*))
-  ;; draw the entire square white so it doens't interfere with the texture
+(when *the-texture*
+(gl:bind-texture :texture-2d *the-texture*))
+  ;;draw the entire square white so it doens't interfere with the texture
   (gl:color 1 1 1)
-  (draw-square)
+ (draw-square)
   (draw-triangle)
   ;; finish the frame
   (gl:flush))
 
 (defun render-my-leave ()
-  (gl:delete-textures (list *the-texture*)))
+  (gl:delete-textures (list *the-texture*))
+  )
