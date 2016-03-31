@@ -3,7 +3,7 @@
 
 
 ;;this motherfucker is what watches you RIGHT NOW LOLOL!LOL!
-(defparameter data-smile #( #xff #x00 #x00 #x00 #x00 #x00 #x00 #xff
+(defparameter magic-smile #( #xff #x00 #x00 #x00 #x00 #x00 #x00 #xff
 							#x00 #x00 #xff #xff #xff #xff #x00 #x00
 							#x00 #xff #x00 #xff #xff #x00 #xff #x00
 							#x00 #xff #xff #xff #xff #xff #xff #x00

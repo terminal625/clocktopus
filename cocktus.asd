@@ -5,6 +5,6 @@
   :serial t
   :components  ((:file "package")
                 (:file "magic" )
-                (:file "cocktus")
                 (:file "window")
-                (:file "render")))
+                (:file "render")
+                (:file "thought")))
