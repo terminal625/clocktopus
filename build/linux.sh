@@ -10,7 +10,7 @@ buildapp \
     --load-system cl-opengl \
     --load-system cl-glu \
     --load-system lispbuilder-sdl \
-    --output clocktopus \
+    --output clocktopus.o \
 	--asdf-path ~/src/lisp/cocktus/ \
 	--load-system cocktus \
     --entry cocktus:arise
