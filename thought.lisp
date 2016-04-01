@@ -13,7 +13,7 @@
 		    (:idle ()
 	           (think)
 	           (sdl:update-display)))
-	    (die)))
+	    (cocktus::quit)))
 
 (defun emerge ()
   (sdl:window 512 512 :title-caption "a fuck made by terminal256" :flags '(sdl:sdl-opengl sdl:sdl-resizable))
@@ -42,6 +42,6 @@
   (gl:flush)
 	)
 
-(defun die ()
+(defun quit ()
   (gl:delete-textures (list *the-texture*))
-  (quit))
+  (sb-ext::quit))
