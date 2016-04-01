@@ -1,6 +1,11 @@
 (in-package #:cocktus)
 
-(defun arise (&rest cocktopussy)
+
+(defun arise (&rest FUCK)
+#+darwin(lispbuilder-sdl-cocoahelper::cocoahelper-init)
+(sb-int:with-float-traps-masked (:overflow :invalid :divide-by-zero) (erect)))
+
+(defun erect ()
 	(sdl:with-init ()
 	    (emerge)
 	    (sdl:with-events ()
@@ -11,7 +16,7 @@
 	    (die)))
 
 (defun emerge ()
-  (sdl:window 512 512 :title-caption "a fuck made by terminal256" :flags '(sdl:sdl-opengl))
+  (sdl:window 512 512 :title-caption "a fuck made by terminal256" :flags '(sdl:sdl-opengl sdl:sdl-resizable))
   (setf cl-opengl-bindings:*gl-get-proc-address* #'sdl-cffi::sdl-gl-get-proc-address)
   (setf (sdl:frame-rate) 60)
 
@@ -22,7 +27,7 @@
 
 (defun think ()
 	"draw a frame"
-  ;;(gl:clear :color-buffer-bit)
+  (gl:clear :color-buffer-bit)
   ;; if our texture is loaded, activate it and turn on texturing
   (gl:enable :texture-2d)
 
@@ -30,12 +35,13 @@
 	(gl:bind-texture :texture-2d *the-texture*))
   ;;draw the entire square white so it doens't interfere with the texture
   (gl:color 1 0 0)
-  (draw-regular-quadrangle)
-  (draw-regular-triangle)
+  (cond 
+    ((is-key-down "I") (draw-regular-quadrangle))
+    (t (draw-regular-triangle)))
   ;; finish the frame
   (gl:flush)
 	)
 
 (defun die ()
   (gl:delete-textures (list *the-texture*))
-  )
+  (quit))
