@@ -31,11 +31,11 @@
     ;; draw a square
   (gl:with-primitive :quads
     ;; texture coordinates per vertex
-    (gl:tex-coord  0 10)
+    (gl:tex-coord  0 1)
     (gl:vertex    -1 -1 0)
-    (gl:tex-coord  10 10)
+    (gl:tex-coord  1 1)
     (gl:vertex     1 -1 0)
-    (gl:tex-coord  10 00)
+    (gl:tex-coord  1 0)
     (gl:vertex     1  1 0)
     (gl:tex-coord  0 0)
     (gl:vertex    -1  1 0)))
