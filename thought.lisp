@@ -9,14 +9,14 @@
 (sb-int:with-float-traps-masked (:overflow :invalid :divide-by-zero) (erect)))
 
 (defun erect ()
-	(sdl:with-init ()
-	    (emerge)
-	    (sdl:with-events ()
-		    (:quit-event () t)
-		    (:idle ()
-	           (think)
-	           (sdl:update-display)))
-	    (cocktus::quit)))
+  (sdl:with-init ()
+    (emerge)
+    (sdl:with-events ()
+      (:quit-event () t)
+      (:idle ()
+	     (think)
+	     (sdl:update-display)))
+    (cocktus::quit)))
 
 (defun make-opengl ()
   (initialize-my-textures))
@@ -41,15 +41,17 @@
   (make-my-texture *the-texture* magic-smile)
   )
 
+(defparameter args 0)
 
 (defun think ()
-	"draw a frame"
+  ;"yolo baggins"
+  ;"draw a frame"
   (gl:clear :color-buffer-bit)
   ;; if our texture is loaded, activate it and turn on texturing
   (gl:enable :texture-2d)
 
-	(when *the-texture*
-	(gl:bind-texture :texture-2d *the-texture*))
+  (when *the-texture*
+    (gl:bind-texture :texture-2d *the-texture*))
   ;;draw the entire square white so it doens't interfere with the texture
   (cond 
     ((is-key-down "I")  (funcall draw-regular-quadrangle))
@@ -57,12 +59,12 @@
     (t                  (funcall draw-regular-triangle)))
 
   (gl:color 0.5 0.8 0.4)
-  (graph (g (car *ARGUMENTS*)))
+  (graph (g args))
 
   (if (is-key-down "ESCAPE") (sdl:push-quit-event))
   ;; finish the frame
   (gl:flush)
-	)
+  )
 
 (defun quit () 
   (sdl:push-quit-event)

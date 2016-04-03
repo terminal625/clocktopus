@@ -17,6 +17,7 @@
 /Users/gregmanabat/quicklisp/dists/quicklisp/software/cl-opengl-20160208-git/cl-glut.asd
 /Users/gregmanabat/quicklisp/dists/quicklisp/software/cl-opengl-20160208-git/cl-glut-examples.asd
 /Users/gregmanabat/quicklisp/dists/quicklisp/software/cl-opengl-20160208-git/cl-opengl.asd
+/Users/gregmanabat/quicklisp/dists/quicklisp/software/cl-utilities-1.2.4/cl-utilities.asd
 /Users/gregmanabat/quicklisp/dists/quicklisp/software/lispbuilder-20151218-git/lispbuilder-sdl/cocoahelper.asd
 /Users/gregmanabat/quicklisp/dists/quicklisp/software/lispbuilder-20151218-git/lispbuilder-lexer/lispbuilder-lexer.asd
 /Users/gregmanabat/quicklisp/dists/quicklisp/software/lispbuilder-20151218-git/lispbuilder-net/lispbuilder-net.asd
@@ -52,6 +53,8 @@
 /Users/gregmanabat/quicklisp/dists/quicklisp/software/lispbuilder-20151218-git/lispbuilder-sdl/lispbuilder-sdl-vecto-examples.asd
 /Users/gregmanabat/quicklisp/dists/quicklisp/software/lispbuilder-20151218-git/lispbuilder-windows/lispbuilder-windows.asd
 /Users/gregmanabat/quicklisp/dists/quicklisp/software/lispbuilder-20151218-git/lispbuilder-yacc/lispbuilder-yacc.asd
+/Users/gregmanabat/quicklisp/dists/quicklisp/software/quicklisp-slime-helper-20150709-git/quicklisp-slime-helper.asd
+/Users/gregmanabat/quicklisp/dists/quicklisp/software/slime-v2.17/swank.asd
 /Users/gregmanabat/quicklisp/dists/quicklisp/software/trivial-features-20150923-git/trivial-features.asd
 /Users/gregmanabat/quicklisp/dists/quicklisp/software/trivial-features-20150923-git/trivial-features-tests.asd
 /Users/gregmanabat/quicklisp/dists/quicklisp/software/trivial-garbage-20150113-git/trivial-garbage.asd
