@@ -51,11 +51,14 @@
 	(when *the-texture*
 	(gl:bind-texture :texture-2d *the-texture*))
   ;;draw the entire square white so it doens't interfere with the texture
-  (gl:color 1 0 0)
   (cond 
     ((is-key-down "I")  (funcall draw-regular-quadrangle))
     ((is-key-down "M")  (funcall draw-test-triangle))
     (t                  (funcall draw-regular-triangle)))
+
+  (gl:color 0.5 0.8 0.4)
+  (graph (g (car *ARGUMENTS*)))
+
   (if (is-key-down "ESCAPE") (sdl:push-quit-event))
   ;; finish the frame
   (gl:flush)

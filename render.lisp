@@ -33,6 +33,14 @@
 
 (defun flatten (sequence) (loop for x in sequence append x))
 
+(defun graph (point-sqeuence) 
+  (let ((l (list-length point-sqeuence)) (i 0))
+    (gl:with-primitive :line-strip
+      (dotimes (i l t)
+        (gl:vertex (- (* 2 (/ i l)) 1) (nth i point-sqeuence) 0))
+        (incf i)
+        )))
+
 (defparameter a (a-nice-function 'gl-2d-wrap regular-triangle))
 (defparameter b (a-nice-function 'gl:color rgb))
 (defparameter a-plus-b (flatten (interleave b a)))
