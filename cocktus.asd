@@ -7,5 +7,4 @@
                 (:file "magic" )
                 (:file "window")
                 (:file "render")
-                (:file "audio")
                 (:file "thought")))
