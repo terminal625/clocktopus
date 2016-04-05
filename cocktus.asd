@@ -2,9 +2,21 @@
   :depends-on (#:cl-opengl
                #:lispbuilder-sdl
                #:cl-utilities)
-  :serial t
-  :components  ((:file "package")
-                (:file "magic" )
-                (:file "window")
-                (:file "render")
-                (:file "thought")))
+
+  :components  
+  	((:file "package")
+  	(:file "magic")
+  (:module	"nature"
+    :components
+		( (:file "birth")
+		  (:file "life")
+		  (:file "death")))
+
+  (:module "man-to-machine"
+	   :components 
+     ( (:file "keyboard")
+			 (:file "mouse")))
+  (:module "machine-to-man"
+	   :components 
+     ((:file "audio")
+			(:file "graphics")))))
