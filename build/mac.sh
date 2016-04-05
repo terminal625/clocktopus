@@ -13,6 +13,6 @@ buildapp \
     --load-system lispbuilder-sdl \
     --load-system cl-utilities \
     --output clocktopus.app/Contents/MacOS/macclocktopus \
-	--asdf-path ~/src/lisp/cocktus/ \
-	--load-system cocktus \
-    --entry cocktus:arise
+	--asdf-path ~/src/lisp/t625/ \
+	--load-system t625 \
+    --entry t625:arise

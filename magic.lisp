@@ -1,4 +1,4 @@
-(in-package #:cocktus)
+(in-package #:t625)
 
 ;;this motherfucker is what watches you RIGHT NOW LOLOL!LOL!
 (defparameter magic-smile #( #xff #x00 #x00 #x00 #x00 #x00 #x00 #xff

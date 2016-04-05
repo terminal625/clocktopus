@@ -1,4 +1,4 @@
-(in-package #:cocktus)
+(in-package #:t625)
 
 (defun make-my-texture (the-texture the-tex-data)
   (gl:bind-texture :texture-2d the-texture)

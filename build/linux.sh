@@ -11,6 +11,6 @@ buildapp \
     --load-system cl-glu \
     --load-system lispbuilder-sdl \
     --output clocktopus.o \
-	--asdf-path ~/src/lisp/cocktus/ \
-	--load-system cocktus \
-    --entry cocktus:arise
+	--asdf-path ~/src/lisp/t625/ \
+	--load-system t625 \
+    --entry t625:arise

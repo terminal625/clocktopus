@@ -1,4 +1,4 @@
-(in-package #:cocktus)
+(in-package #:t625)
 
 ;;takes a the key's character or name tests the state
 (defun is-key-down (the-key)
