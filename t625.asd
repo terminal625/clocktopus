@@ -1,7 +1,3 @@
-(defpackage #:t625
-  (:use #:cl)
-  (:export "ARISE"))
-
 (asdf:defsystem #:t625
 
   :description "when parts come together"
@@ -16,19 +12,20 @@
 
   :serial t
   :components  
-  ((:file "magic")
+  ((:file "package")
+    (:file "magic")  
 
-   (:module "man-to-machine"
+   (:module "man-machine"
       :components 
-      ((:file "keyboard")
-       (:file "mouse")))
+      ((:file "basic-input")))
 
-   (:module "machine-to-man"
+   (:module "machine-man"
       :components 
       ((:file "audio")
        (:file "graphics")))
 
    (:module "nature"
-      :depends-on ("man-to-machine" "machine-to-man")
+      :depends-on ("man-machine" "machine-man")
     	:components      
-    	((:file "life")))))
+    	((:file "life")
+      (:file "thought")))))

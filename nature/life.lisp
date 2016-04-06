@@ -1,9 +1,11 @@
 (in-package #:t625)
 
-(defun arise (&rest arguments)
+(defun evomer (a b)
+  (remove b a))
 
-  ;;Telling opengl where to look for the surface
-  (setf cl-opengl-bindings:*gl-get-proc-address* #'sdl-cffi::sdl-gl-get-proc-address)
+(define-modify-macro evomerf (&rest args) evomer)
+
+(defun arise (&rest arguments)
 
   ;;Setting up cocoa for macosx integration
   #+darwin (lispbuilder-sdl-cocoahelper::cocoahelper-init)
@@ -12,14 +14,36 @@
   (sb-int:set-floating-point-modes :traps '()) 
   
   ;;This is the initialization macro
-  (sdl:with-init ()
+  (sdl:with-init () 
 
 
     ;;init files subject to changes
     (hatch)
 
+    (sdl:enable-unicode)
+    ;;Telling opengl where to look for the surface
+     (setf cl-opengl-bindings:*gl-get-proc-address* #'sdl-cffi::sdl-gl-get-proc-address)
+
     ;;Macro for handling the main loop and processing input
     (sdl:with-events ()
+
+      (:ACTIVE-EVENT (:GAIN GAIN :STATE STATE))
+
+      ;;we map the sdl ascii characters to lisp characters
+      (:KEY-DOWN-EVENT (:STATE STATE :SCANCODE SCANCODE :KEY KEY :MOD MOD :UNICODE UNICODE)
+        (setf (gethash KEY man-machine::sdl-ascii) (code-char UNICODE))
+        (push (code-char UNICODE) man-machine::pressed-keys)
+
+        (print man-machine::pressed-keys )
+        )
+
+      (:KEY-UP-EVENT (:STATE STATE :SCANCODE SCANCODE :KEY KEY :MOD MOD :UNICODE UNICODE)
+        (evomerf man-machine::pressed-keys (gethash KEY man-machine::sdl-ascii)))
+
+
+      (:MOUSE-MOTION-EVENT (:STATE STATE :X X :Y Y :X-REL X-REL :Y-REL Y-REL))
+      (:MOUSE-BUTTON-DOWN-EVENT (:BUTTON BUTTON :STATE STATE :X X :Y Y))
+      (:MOUSE-BUTTON-UP-EVENT (:BUTTON BUTTON :STATE STATE :X X :Y Y))
 
       ;;this has to be here or else the window will not close
       (:quit-event () 
@@ -32,51 +56,7 @@
       (:idle ()
 
         ;;main loop
-       (fly)))))
-
-(defparameter *the-texture* nil)
-(defparameter args 3)
-(defparameter window-height 512)
-(defparameter window-width 512)
-(defparameter window-fps 60)
-
-(defun hatch ()
-
-  ;;Setting the window 
-  (sdl:window window-width window-height :flags '(sdl:sdl-opengl ))
-
-  ;;60 Hertz framerate for our 60 Hertz monitors of course
-  (setf (sdl:frame-rate) window-fps)
-
-  (setf *the-texture* (car (gl:gen-textures 1)))
-  (make-my-texture *the-texture* magic-smile))
-
-(defun fly ()
-  (sdl:set-caption "a fuck made by terminal256" "mini fuck")
-
-  (gl:clear :color-buffer-bit)
-  (gl:enable :texture-2d)
-
-  (gl:bind-texture :texture-2d *the-texture*)
-
-  (draw-regular-quadrangle)
-  (if (is-key-down "M")  (draw-regular-triangle))
-
-  (gl:color 0.5 0.2 0.9)
-  (graph (g args))
-  ;; finish the frame
-  (gl:flush)
-  (sdl:update-display)
-
-  (if (is-key-down "ESCAPE") (sdl:push-quit-event))
-  )    
-
-  (defun burn ()
-    (let ((exit-fine t))
-      (print "burned")
-      exit-fine))               
-
-
+       (fly)))))    
 
 
 
