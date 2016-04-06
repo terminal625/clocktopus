@@ -1,9 +1,11 @@
 (defpackage #:t625
-  (:use #:cl)
-  (:export "ARISE"))
+ 	(:use #:cl)
+ 	(:export "ARISE"))
 
 (defpackage #:man-machine
-  (:use #:cl))
+	(:nicknames keyboard mouse)
+  	(:use #:cl))
 
 (defpackage #:machine-man
-  (:use #:cl))
+	(:nicknames graphics audio)
+ 	(:use #:cl))

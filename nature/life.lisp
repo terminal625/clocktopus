@@ -1,9 +1,7 @@
 (in-package #:t625)
 
-(defun evomer (a b)
-  (remove b a))
-
-(define-modify-macro evomerf (&rest args) evomer)
+(define-modify-macro unionf (&rest args) union)
+(define-modify-macro set-differencef (&rest args) set-difference)
 
 (defun arise (&rest arguments)
 
@@ -31,14 +29,13 @@
 
       ;;we map the sdl ascii characters to lisp characters
       (:KEY-DOWN-EVENT (:STATE STATE :SCANCODE SCANCODE :KEY KEY :MOD MOD :UNICODE UNICODE)
-        (setf (gethash KEY man-machine::sdl-ascii) (code-char UNICODE))
-        (push (code-char UNICODE) man-machine::pressed-keys)
-
-        (print man-machine::pressed-keys )
-        )
+        (let ((character (list (code-char UNICODE))))
+          (unionf (gethash KEY keyboard::sdl-ascii) character)
+          (unionf keyboard::pressed-keys character)))
 
       (:KEY-UP-EVENT (:STATE STATE :SCANCODE SCANCODE :KEY KEY :MOD MOD :UNICODE UNICODE)
-        (evomerf man-machine::pressed-keys (gethash KEY man-machine::sdl-ascii)))
+        (let ((dem-keys (gethash KEY keyboard::sdl-ascii)))
+          (set-differencef keyboard::pressed-keys dem-keys)))
 
 
       (:MOUSE-MOTION-EVENT (:STATE STATE :X X :Y Y :X-REL X-REL :Y-REL Y-REL))
@@ -54,7 +51,7 @@
 
       ;;the procedure when no events are going on
       (:idle ()
-
+          (print keyboard::pressed-keys)
         ;;main loop
        (fly)))))    
 
