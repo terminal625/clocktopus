@@ -1,10 +1,20 @@
 (defpackage #:t625
  	(:use #:cl)
- 	(:export "ARISE"))
+ 	(:export #:ARISE))
 
 (defpackage #:man-machine
 	(:nicknames keyboard mouse)
-  	(:use #:cl))
+  	(:use #:cl)
+  	(:export 
+  		#:KEY-P
+  		#:x
+  		#:y
+  		#:delta
+  		#:left-p
+  		#:middle-p
+  		#:right-p
+  		#:wheel-up
+  		#:wheel-down))
 
 (defpackage #:machine-man
 	(:nicknames graphics audio)
