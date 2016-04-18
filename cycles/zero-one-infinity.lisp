@@ -1,4 +1,4 @@
-(in-package #:t625)
+(in-package #:sandbox)
 
 (defun arise (&rest arguments)
 
@@ -17,7 +17,7 @@
 
     (sdl:enable-unicode)
     ;;Telling opengl where to look for the surface
-     (setf cl-opengl-bindings:*gl-get-proc-address* #'sdl-cffi::sdl-gl-get-proc-address)
+    (setf cl-opengl-bindings:*gl-get-proc-address* #'sdl-cffi::sdl-gl-get-proc-address)
 
     ;;Macro for handling the main loop and processing input
     (sdl:with-events ()
@@ -26,24 +26,27 @@
 
       ;;we map the sdl ascii characters to lisp characters
       (:KEY-DOWN-EVENT (:STATE STATE :SCANCODE SCANCODE :KEY KEY :MOD MOD :UNICODE UNICODE)
-        (keyboard::key-down key UNICODE))
+		       (keyboard::key-down key UNICODE))
 
       (:KEY-UP-EVENT (:STATE STATE :SCANCODE SCANCODE :KEY KEY :MOD MOD :UNICODE UNICODE)
-        (keyboard::key-up key))
+		     (keyboard::key-up key))
 
       ;;this has to be here or else the window will not close
       (:quit-event () 
 
-        ;;custom quit procedure
-        ;;has to return true for the window to exit
-        (burn))
+		   ;;custom quit procedure
+		   ;;has to return true for the window to exit
+		   (burn))
 
       ;;the procedure when no events are going on
       (:idle ()
-                          ; --(print keyboard::pressed-keys)--
-                          ;;(print 89)
-        ;;main loop
-       (fly)))))
+					(print keyboard::pressed-keys)
+	     ;;(print 89)
+	     ;;main loop
+	     
+	     (fly)
+	     (keyboard::update)
+	     ))))
 
 
 

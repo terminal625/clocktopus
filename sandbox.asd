@@ -1,12 +1,13 @@
-(asdf:defsystem #:t625
-
+(asdf:defsystem #:sandbox
   :description "when parts come together"
   :version "0.0.0"
-  :author "terminal 256"
-  :maintainer "terminal 625"
+  :author "a little boy in the sand"
+  :maintainer "tain mainer"
   :licence "fuck that shit"
 
   :depends-on (#:cl-opengl
+               #:cl-glu
+               #:cl-glut
                #:lispbuilder-sdl
                #:cl-utilities)
 
@@ -29,5 +30,4 @@
     	((:file "zero-one-infinity")
         (:module "ego"
          :components 
-         ((:file magic)
-          (:file thought)))))))
+         ((:file thought)))))))
