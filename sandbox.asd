@@ -13,7 +13,8 @@
 
   :serial t
   :components  
-  ((:file "package")  
+  ((:file "package") 
+   (:file "thought")
 
    (:module "man-machine"
       :components 
@@ -22,12 +23,4 @@
    (:module "machine-man"
       :components 
       ((:file "audio")
-       (:file "graphics")))
-
-   (:module "cycles"
-      :depends-on ("man-machine" "machine-man")
-    	:components      
-    	((:file "zero-one-infinity")
-        (:module "ego"
-         :components 
-         ((:file thought)))))))
+       (:file "graphics")))))
