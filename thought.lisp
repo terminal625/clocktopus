@@ -24,35 +24,23 @@
       ;;the procedure when no events are going on
       (:idle () (inject-me)))))
 
-(let ((16/9-aspect-ratios  '((320 180)   (480 270)   (640 360) 
-			     (848 480)   (1280 720)  (1920 1080)))
-      (4/3-aspect-ratios   '((640 480)   (800 600)   (960 720) 
-			     (1024 768)  (1280 960)  (1400 1050) 
-			     (1440 1080) (1600 1200) (1856 1392)
-			     (1920 1440) (2048 1536)))
-      (16/10-aspect-ratios '((1280 800)  (1440 900)  (1680 1050) 
-			     (1920 1200) (2560 1600))))
-  (defun hatch ()
-    (flet ((set-aspect-ratio (x) 
-	     (setf window-width (car x) window-height (cadr x))))
-      (set-aspect-ratio (nth 0 4/3-aspect-ratios)))
-    ;;Setting the window
-    (sdl:window window-width window-height :opengl t
-		:opengl-attributes '((:sdl-gl-depth-size   16)
-				     (:sdl-gl-doublebuffer 1)))
-    ;;60 Hertz framerate for our 60 Hertz monitors of course
-    (setf (sdl:frame-rate) 60)
-    
-    (setf *the-texture* (car (gl:gen-textures 1)))
-    (make-my-texture *the-texture* magic-smile)
-    
-    (init-gl)))
+(defun hatch ()
+   ;(_ window :set-aspect-ratio (/ 16 10) 3) 
+  
+  ;;Setting the window
+  (sdl:window (_ window :get-width) (_ window :get-height) :opengl t
+	      :opengl-attributes '((:sdl-gl-depth-size   16)
+				   (:sdl-gl-doublebuffer 1)))
+  ;;60 Hertz framerate for our 60 Hertz monitors of course
+  (setf (sdl:frame-rate) 60)
+  
+  (init-gl))
 
 (defun init-gl ()
-  (gl:viewport 0 0 window-width window-height)
+  (gl:viewport 0 0 (_ window :get-width) (_ window :get-height))
   (gl:matrix-mode :projection)
   (gl:load-identity)
-  (glu:perspective FOV (/ window-width window-height) 1 1000.0)
+  (glu:perspective FOV (/ (_ window :get-width) (_ window :get-height)) 1 1000.0)
   (gl:matrix-mode :modelview)
   (gl:cull-face :back)
   (gl:clear-color 0.5 0.5 0.5 0)
@@ -60,122 +48,127 @@
   (gl:draw-buffer :back)
   (gl:enable :cull-face :depth-test))
 
-(defparameter FOV 100)
-(defparameter *camera-pitch* 0)
-(defparameter *camera-yaw* 0)
-
-(defparameter *friction* #(0.8 0.8 0.8))
-(defparameter *up-vector* #(0 1 0))
-(defparameter *looking-at* #(0 0 -3))
-
-(defparameter *the-texture* nil)
-
-(defparameter *window-caption* nil)
-(defparameter *window-mini-caption* nil)
-(defparameter window-height 512)
-(defparameter window-width 512)
-(defparameter *ticks* 0)
-
-(defparameter mouse-sensitivity (/ 1 180))
-(defparameter *mouse-delta* nil)
-
-(defparameter controls "fs ade")
-
 (defmacro nope (&rest nope))
+(defun _ (funk &rest args) (apply funk args))
+(defun stock (hash)
+  (lambda (pair) (setf (gethash (car pair) hash) (cadr pair))))
 
-(defmacro call (function-table nombre &rest args)
-  `(funcall (gethash (string (quote ,nombre)) ,function-table) ,args))
-
-(defun particle (position velocity)
-  (let ((self (make-hash-table))
-	(pos position)
-	(vel velocity))  
-    (macrolet ((def (name args &body body)
-		   `(setf (gethash (string (quote ,name)) self) (lambda ,args ,@body)) ))
-      (def :set-pos (x) (setf pos x))
-      (def :get-pos () pos)
-      (def :get-vel () vel)
-      (def :set-vel (x) (setf vel x) ))
-    self))
-
-(defun inject-me ()
-  (incf *ticks*)
-  (keyboard::update) 
-  (if (keyboard::key-p #\Esc) (sdl:push-quit-event))
+(macrolet 
+    ((def (name args &body body)
+       `(setf (gethash ,name function-table) (lambda ,args ,@body)))
+     (make-class (&body body)
+       `(let* ((function-table (make-hash-table))
+	       (self (lambda (funky &rest args) 
+		      (apply (gethash funky function-table) args)))) 
+	  ,@body
+	  self)))
   
-  (let* ((x (cos *camera-yaw*))
-	 (y (sin *camera-pitch*))
-	 (z  (sin *camera-yaw*))
-	 (xz (vector x z))
-	 (lone (hypot xz))
-	 (rect (scale xz (/ (cos *camera-pitch*) lone))))
-    (setf *looking-at*
-	  (vector (aref rect 0) y (aref rect 1))
-	  ))
-  (setf *mouse-delta* (mouse:delta))
-  (setf *camera-yaw* (+ *camera-yaw* (* mouse-sensitivity (aref *mouse-delta* 0))))
-  (setf *camera-pitch* (+ *camera-pitch* (* mouse-sensitivity (aref *mouse-delta* 1))))
-  (setq *window-caption* (coerce keyboard::down-keys 'string)
-	*window-mini-caption* "mini fuck")
-  (sdl:set-caption *window-caption* *window-mini-caption*)
+  (defun make-particle (&key 
+		     ((:p position)) 
+		     ((:v velocity))
+		     ((:o orientation))
+		     ((:a angular-velocity)))
+    (make-class
+     (let ((pos position) 
+	   (vel velocity))    
+       (def :get-pos () pos)
+       (def :set-pos (x) (setf pos x))
+       (def :get-vel () vel)
+       (def :set-vel (x) (setf vel x)))))
   
-  (macrolet 
+  (defun make-window (&key 
+			((:h height) 512) 
+			((:w width) 512)
+			((:c caption) "fs ade")
+			((:lil-cap little-caption) "hey ;]"))
+    (make-class
+     (let* ((h height)
+	    (w width)
+	    (c caption)
+	    (lil-c little-caption)
+	    (aspect-ratios (make-hash-table))
+	    (store (stock aspect-ratios)))
+
+       (mapcar store 
+	       '(((/ 16 9) (#(16 9) (20 30 40 53 80 120)))
+		 ((/ 4 3) (#(4 3) (160 200 240 256 320 350 360 400 464 480 512)))
+		 ((/ 16 10) (#(16 10) (80 90 105 120 160)))))     
+       (def :get-height () h)
+       (def :set-height (x) (setq h x))       
+       (def :get-width () w)
+       (def :set-width (x) (setq w x))       
+       (def :get-caption () c)   
+       (def :set-caption (x) (setq c x))
+       (def :get-mini-caption () lil-c)   
+       (def :set-mini-caption (x) (setq lil-c x))
+       (def :push-caption ()
+	 (sdl:set-caption c lil-c))
+       (def :set-aspect-ratio (ratio num)
+	 (let* ((dat-list (gethash ratio aspect-ratios))
+		(dimensions (scale (car dat-list)
+				   (nth num (cadr dat-list)))))
+	   (_ self :set-width (aref dimensions 0))
+	   (_ self :set-height (aref dimensions 1)))))))
+  
+  (defun make-world (&key ((:p position) 0) ((:v velocity) 1))
+    (make-class
+     (let ((v velocity)
+	   (p position))
+       (def :set-pos (x) (setf p x))
+       (def :get-pos () p)       
+       (def :set-vel (x) (setf v x))
+       (def :get-vel () v)   
+       (def :next () (setf p (+ p v)))
+       (def :prev () (setf p (- p v)))))))
+
+(let ((world (make-world :p 0 :v 1)))
+
+  (defun inject-me ()
+    
+    (_ world :next)
+    (keyboard::update) 
+    (if (keyboard::key-p #\Esc) (sdl:push-quit-event))
+
+    (_ window :set-caption  (coerce keyboard::down-keys 'string))
+    (_ window :push-caption)
+    
+    (setf *the-texture* (car (gl:gen-textures 1)))
+    (make-my-texture *the-texture* magic-smile)
+    
+    (macrolet 
 	((with-clockwise-winding (&body body)
 	   `(progn 
 	      (gl:front-face :cw) 
 	      (progn ,@body)  
 	      (gl:front-face :ccw))))
-    (labels ((random-small () (/ (random 1024) 1024))
-	     (r-color ()
-	       (gl:color (random-small) (random-small) (random-small)))
-	     (draw-teapot () 
-	       (with-clockwise-winding (glut:solid-teapot 1.3)))
-	     )
-      (gl:clear :color-buffer-bit :depth-buffer-bit)
-      (gl:matrix-mode :modelview)    
-      (gl:with-pushed-matrix
-	(r-color)
-	(gl:translate -1.8 0 0)
-	(gl:scale 80 80 80)
-	(gl:rotate (* *ticks* (/ pi 180) 40) 0 1 0)
-	(glut:solid-teapot 1.3))
-      
-      (gl:with-pushed-matrix
-	(gl:translate 0 0 -5)
-	(r-color)
-	(draw-teapot)
-	)
-      (gl:enable :texture-2d)
-      (gl:enable :blend)
-      (gl:bind-texture :texture-2d *the-texture*)
-      ;; finish the frame
-      (gl:flush)
-      (sdl:update-display)
-      ))
-  
-  (nope
-   (defparameter camera (particle #(0.2 0.2 0.2) #(1 1 10)))
-   (apply #'glu:look-at (concatenate 'list
-				    (funcall camera 'get-pos)
-				    (map 'vector #'+
-					 *looking-at*
-					  (funcall camera 'get-pos))
-				    *up-vector*))
-   (scalevf (call camera :get-vel) *friction*)
-   (addvf (call camera :get-pos) (call camera :get-vel))
-   (setf vel-total #(0 0 0))
-   (dotimes (n 6)
-     (if
-      (keyboard::key-p (aref controls n))
-      (addvf vel-total (aref 3d-control-forces n))))
-   (let* ((wowzer (complex (aref vel-total 0) (aref vel-total 2)))
-	  (howzie (complex (cos *camera-yaw*) (sin *camera-yaw*)))
-	  (wibbly (* howzie wowzer))
-	  (hello  (vector
-		   (realpart wibbly)
-		   (aref vel-total 1)
-		   (imagpart wibbly))))
-     (addvf (call camera :get-vel) vel-total))))
+      (labels ((random-small () (/ (random 1024) 1024))
+	       (r-color ()
+		 (gl:color (random-small) (random-small) (random-small)))
+	       (draw-teapot () 
+		 (with-clockwise-winding (glut:solid-teapot 1.3))))
+	(gl:clear :color-buffer-bit :depth-buffer-bit)
+	(gl:matrix-mode :modelview)
+	(gl:enable :texture-2d)
+	(gl:enable :blend)
+	(gl:bind-texture :texture-2d *the-texture*)
+	
+	(gl:with-pushed-matrix
+	  (gl:color 1 1 1)
+	  (if (keyboard:key-p #\a) (r-color))
+	  (gl:translate -1.8 0 0)
+	  (gl:scale 80 80 80)
+	  (gl:rotate (* (_ world :get-pos) (/ pi 180) 40) 0 1 0)
+	  (glut:solid-teapot 1.3))
+	
+	(gl:with-pushed-matrix
+	  (gl:translate 0 0 -5)
+	  (r-color)
+	  (draw-teapot))
+	
+	(gl:flush)
+	(sdl:update-display)))))
+
+(defparameter window (make-window))
 
 (defun scalevf (vec scalar) (map-into vec #'* scalar vec))
 (defun addvf (vec delta) (map-into vec #'+ delta vec))
