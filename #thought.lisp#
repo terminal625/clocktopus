@@ -150,7 +150,7 @@
     (gl:polygon-mode :front :fill)
     (gl:draw-buffer :back)
     (gl:enable :cull-face :depth-test)
-    (glu:look-at x y z 0 0 0 0 1 0)
+    (glu:look-at x y z -1 0 0 0 1 0)
     
     (setf *the-texture* (car (gl:gen-textures 1)))
     (make-my-texture *the-texture* magic-smile)

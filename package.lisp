@@ -14,8 +14,14 @@
   		#:middle-p
   		#:right-p
   		#:wheel-up
-  		#:wheel-down))
+  		#:wheel-down
+		#:key-released-p
+		#:key-pressed-p
+		#:down-keys
+		#:pressed-keys
+		#:released-keys
+		))
 
 (defpackage #:machine-man
-	(:nicknames graphics audio)
+	(:nicknames screen speaker)
  	(:use #:cl))

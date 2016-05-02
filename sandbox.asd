@@ -13,14 +13,7 @@
 
   :serial t
   :components  
-  ((:file "package") 
-   (:file "thought")
-
-   (:module "man-machine"
-      :components 
-      ((:file "basic-input")))
-
-   (:module "machine-man"
-      :components 
-      ((:file "audio")
-       (:file "graphics")))))
+  ((:file "package")  
+   (:file "man-machine")
+   (:file "machine-man")
+   (:file "thought")))

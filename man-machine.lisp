@@ -10,10 +10,15 @@
 
 ;; this is a list of all the pressed keys,
 ;; in common lisp char format
-(defparameter down-keys-prev nil)
-(defparameter down-keys nil)
-(defparameter pressed-keys nil)
-(defparameter released-keys nil)
+
+(defun initialize ()
+  (sdl:enable-unicode)
+  (defparameter down-keys-prev nil)
+  (defparameter down-keys nil)
+  (defparameter pressed-keys nil)
+  (defparameter released-keys nil))
+
+(initialize)
 
 ;; getting the mouse x position
 (defun x () (sdl:mouse-x))
@@ -41,7 +46,6 @@
 (defun key-pressed-p (the-key) (member the-key pressed-keys))
 (defun key-released-p (the-key) (member the-key released-keys))
 
-
 ;; TIL what a modify macro is
 (define-modify-macro unionf (&rest args) union)
 (define-modify-macro set-differencef (&rest args) set-difference)
@@ -49,18 +53,17 @@
 (defun update ()
   (setf pressed-keys (set-difference down-keys down-keys-prev))
   (setf released-keys (set-difference down-keys-prev down-keys))
-  (setf down-keys-prev down-keys)
-  )
+  (setf down-keys-prev down-keys))
 
 ;; helper function for the pressed key list
-(defun key-down (key unicode) 
-	(let ((character (list (code-char UNICODE))))
-          (unionf (gethash key keyboard::sdl-ascii) character)
-          (unionf keyboard::down-keys character)))
+(defun key-down (key unicode)
+  (let ((character (list (code-char unicode))))
+    (unionf (gethash key sdl-ascii) character)
+    (unionf down-keys character)))
 
 ;; yet another helper function for the key list
 (defun key-up (key) 
-	(let ((dem-keys (gethash key keyboard::sdl-ascii)))
-          (set-differencef keyboard::down-keys dem-keys)))
+  (let ((dem-keys (gethash key keyboard::sdl-ascii)))
+    (set-differencef keyboard::down-keys dem-keys)))
 
 ;; commenting out code. it is almost like junk dna
