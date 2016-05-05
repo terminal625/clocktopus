@@ -147,7 +147,7 @@
       (gl:polygon-mode :front :fill)
       (gl:draw-buffer :back)
       (gl:enable :cull-face :depth-test)
-      (glu:look-at x y z 0 0 -5 0 1 0)
+      
       
       (setf *the-texture* (car (gl:gen-textures 1)))
       (make-my-texture *the-texture* magic-smile)
@@ -169,7 +169,8 @@
 	  (gl:enable :blend)
 	  (gl:blend-func :src-alpha :one-minus-src-alpha)
 	  (gl:bind-texture :texture-2d *the-texture*)
-	  
+
+	  (glu:look-at x y z 0 0 -5 0 1 0)
 	  (gl:with-pushed-matrix
 	    (gl:color 1 1 1)
 	    (cp #\a (r-color))
@@ -180,68 +181,24 @@
 	    (glut:solid-teapot 9))
 	  
 	  (gl:with-pushed-matrix
-	    (gl:translate 0 0 -5)
-	    (draw-teapot)
-	    
-	    (gl:translate -5 0 0)
-
-<<<<<<< Updated upstream
-    (gl:viewport 0 0 (_ window :get-width) (_ window :get-height))
-    (gl:matrix-mode :projection)
-    (gl:load-identity)
-    (glu:perspective 100 (/ (_ window :get-width) (_ window :get-height)) 1 1000.0)
-    (gl:matrix-mode :modelview)
-    (gl:cull-face :back)
-    (gl:clear-color 0.5 0.5 0.5 0)
-    (gl:polygon-mode :front :fill)
-    (gl:draw-buffer :back)
-    (gl:enable :cull-face :depth-test)
-    
-    
-    (setf *the-texture* (car (gl:gen-textures 1)))
-    (make-my-texture *the-texture* magic-smile)
-    
-    (macrolet 
-	((with-clockwise-winding (&body body)
-	   `(progn 
-	      (gl:front-face :cw) 
-	      (progn ,@body)  
-	      (gl:front-face :ccw))))
-      (labels ((random-small () (/ (random 1024) 1024))
-	       (r-color ()
-		 (gl:color (random-small) (random-small) (random-small)))
-	       (draw-teapot () 
-		 (with-clockwise-winding (glut:solid-teapot 1.3))))
-	(gl:clear :color-buffer-bit :depth-buffer-bit)
-	(gl:matrix-mode :projection)
-	(glu:look-at x y z 0 0.1 -5 0 1 0)
-	(gl:matrix-mode :modelview)
-	(gl:enable :texture-2d)
-	(gl:enable :blend)
-	(gl:blend-func :src-alpha :one-minus-src-alpha)
-	(gl:bind-texture :texture-2d *the-texture*)
-
-	
-	(gl:with-pushed-matrix
-	  (gl:color 1 1 1)
-	  (if (keyboard:key-p #\a) (r-color))
-	  (gl:translate -1.8 0 0)
-	  (gl:scale 80 80 80)
-	  (gl:rotate (* (_ world :get-pos) (/ pi 180) 40) 0 1 0)
-	  (glut:solid-teapot 1.3))
-	
-	(gl:with-pushed-matrix
-	  (gl:translate 0 0 -5)
-					;(r-color)
-	  (draw-teapot))
-	
-	(gl:flush)))))
-=======
-	    (gl:disable :texture-2d)
-	    (glut:solid-sierpinski-sponge 4 (list 1 2 3 4) 4))
+	   (gl:translate 1 1 -5)
+	   (draw-teapot))
 	  
-	  (gl:flush))))))
->>>>>>> Stashed changes
+	  (gl:with-pushed-matrix
+	   (gl:color 1 1 1)
+	   (if (keyboard:key-p #\a) (r-color))
+	   (gl:translate -1.8 0 0)
+	   (gl:scale 80 80 80)
+	   (gl:rotate (* (_ world :get-pos) (/ pi 180) 40) 0 1 0)
+	   (glut:solid-teapot 1.3))
+	  
+	  (gl:with-pushed-matrix
+	   (gl:translate 0 0 -5)				
+	   (draw-teapot))
+
+
+	  (gl:disable :texture-2d))
+	(gl:flush)))))
 
 (defun scalevf (vec scalar)
   (map-into vec #'* scalar vec))
