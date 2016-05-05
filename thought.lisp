@@ -150,7 +150,7 @@
     (gl:polygon-mode :front :fill)
     (gl:draw-buffer :back)
     (gl:enable :cull-face :depth-test)
-    (glu:look-at x y z 0 0 0 0 1 0)
+    
     
     (setf *the-texture* (car (gl:gen-textures 1)))
     (make-my-texture *the-texture* magic-smile)
@@ -167,11 +167,14 @@
 	       (draw-teapot () 
 		 (with-clockwise-winding (glut:solid-teapot 1.3))))
 	(gl:clear :color-buffer-bit :depth-buffer-bit)
+	(gl:matrix-mode :projection)
+	(glu:look-at x y z 0 0.1 -5 0 1 0)
 	(gl:matrix-mode :modelview)
 	(gl:enable :texture-2d)
 	(gl:enable :blend)
 	(gl:blend-func :src-alpha :one-minus-src-alpha)
 	(gl:bind-texture :texture-2d *the-texture*)
+
 	
 	(gl:with-pushed-matrix
 	  (gl:color 1 1 1)
