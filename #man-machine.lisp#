@@ -28,7 +28,6 @@
 ;; mouse position
 (defun delta () (sdl:mouse-relative-position))
 
-
 ;; functions which give the state of the mouse buttons
 (defun right-p ()(sdl:mouse-right-p))
 (defun left-p ()(sdl:mouse-left-p))
