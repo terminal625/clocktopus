@@ -13,5 +13,4 @@
 
   :serial t
   :components  
-  ((:file "package")  
-   (:file "thought")))
+  ((:file "one")))

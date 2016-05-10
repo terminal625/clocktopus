@@ -19,8 +19,7 @@
 		#:key-pressed-p
 		#:down-keys
 		#:pressed-keys
-		#:released-keys
-		))
+		#:released-keys))
 
 (defpackage #:machine-man
 	(:nicknames screen speaker)
