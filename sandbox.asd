@@ -14,6 +14,4 @@
   :serial t
   :components  
   ((:file "package")  
-   (:file "man-machine")
-   (:file "machine-man")
    (:file "thought")))
